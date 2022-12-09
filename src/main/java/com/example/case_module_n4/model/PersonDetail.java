@@ -24,7 +24,7 @@ public class PersonDetail {
     @ManyToOne
     private Position position;
     @ManyToOne
-    private Rank rank;
+    private Ranks rank;
     @ManyToOne
     private Manners manners;
 }

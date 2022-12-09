@@ -1,22 +1,26 @@
 package com.example.case_module_n4.service;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-@Service
+@Component
+// sẽ tạo ra token.
 public class JwtService {
     // key để mã hóa token.
-    private static final String SECRET_KEY = "123456789";
+    private static final String SECRET_KEY = "12345678999";
     // thời gian để token sống.
     private static final long EXPIRE_TIME = 86400000000L;
 
-    // hàm tạo ra token
-    public String createToken(Authentication authentication) {
+    //  là để tạo token.
+    //  Authentication xác thực trong Spring.
+    public String generateTokenLogin(Authentication authentication) {
         // lấy đối tượng đang đăng nhập.
         User user = (User) authentication.getPrincipal();
 

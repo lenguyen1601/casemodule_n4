@@ -2,6 +2,7 @@ package com.example.case_module_n4.config;
 
 import com.example.case_module_n4.config.filter.JwtAuthenticationFilter;
 import com.example.case_module_n4.service.AccountService;
+import com.sun.net.httpserver.Authenticator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,10 +21,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     AccountService accountService;
-
     @Autowired
     JwtAuthenticationFilter jwtAuthenticationFilter;
-
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
     @Override
     public AuthenticationManager authenticationManager() throws Exception {
@@ -38,14 +37,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().ignoringAntMatchers("/**");
-        http.authorizeRequests().antMatchers("/home", "/login").permitAll()
-                .anyRequest().authenticated()
-                .and().csrf().disable();
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling();
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.cors();
+        http.authorizeRequests().antMatchers("/login","/").permitAll()
+                .and().authorizeRequests().antMatchers("/user**").hasAnyAuthority("ROLE_USER","ROLE_ADMIN","ROLE_HLV")
+                .and().authorizeRequests().antMatchers("/admin**").hasRole("ADMIN")
+                .and().authorizeRequests().antMatchers("/hlv**").hasRole("HLV")
+                .and().authorizeRequests().anyRequest().authenticated()
+                .and().logout();
+        http.csrf().disable();
     }
 }

@@ -9,5 +9,4 @@ public class ServletInitializer extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(CaseModuleN4Application.class);
     }
-
 }
